@@ -1,0 +1,99 @@
+---
+title: "Q4: Reproducible Statistical Test and Graph Code"
+output: html_document
+date: '2022-12-04'
+---
+
+
+```{r message=FALSE, warning=FALSE}
+# Loading the packages needed for this script
+
+library(palmerpenguins)
+library(ggplot2)
+library(janitor)
+library(dplyr)
+library(tidyr)
+library(tidyverse)
+library(svglite)
+
+```
+
+```{r warning=FALSE}
+# Setting the working directory and reading in the raw data set from its' separate file
+
+setwd("~/PenguinProjectAssessment")
+
+penguins_raw <- read.csv("penguins_raw/penguins_raw.csv")
+```
+
+```{r warning=FALSE}
+# Creating the cleaning function: removing empty rows and cleaning names
+
+cleaning <- function(data_raw){
+  data_raw %>%
+    clean_names() %>%
+    remove_empty(c("rows", "cols")) %>%
+    select(-starts_with("delta")) 
+}
+
+# Cleaning the raw data 
+
+penguins_now_clean <- cleaning(penguins_raw)
+```
+
+
+```{r}
+# Saving the clean data in a separate file
+
+write.csv(penguins_now_clean, "penguins_clean/penguins_clean.csv")
+
+```
+
+```{r warning=FALSE}
+# Creating my linear model assessing the relationship between flipper length and body mass using the cleaned penguin data
+
+linear_model <- lm(flipper_length_mm~body_mass_g, data=penguins_now_clean)
+
+# Plots to check whether the linear regression model assumptions are met by the data. 
+
+plot(linear_model, which = 2)
+plot(linear_model, which = 1)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+# Summary of the linear regression model to analyse the relationship between flipper length and body mass in the Palmer penguins.
+
+summary(linear_model)
+```
+This linear model shows a statistically significant positive effect of body mass on flipper length. The p value is very close to 0. Therefore, we can conclude that as body mass increases, so does flipper length. 
+
+```{r message=FALSE, warning=FALSE}
+# Making a function that will create a figure to illustrate the results found by the statistical test above. 
+
+lm_figure <- function(pengiuns_clean){ 
+  ggplot(penguins_now_clean, aes(x=flipper_length_mm, y=body_mass_g))+geom_smooth(method=lm, level=0.99, fill='grey',  colour='grey40')+
+    geom_point(colour='dodgerblue4') + labs(title= "The Relationship Between Flipper Length and Body Mass for Palmer Penguins", x = "Flipper length (mm)",
+                       y = "Body mass (g)") +
+    theme_bw()}
+
+# Saving the linear model plot as an svg file
+
+save_lm_figure <- function(penguins_clean, 
+                              filename, size, scaling){
+  size_inches = size/2.54
+  svglite(filename, width   = size_inches, 
+          height  = size_inches, 
+          scaling = scaling)
+  lm_figure <- lm_figure(penguins_clean)
+  print(lm_figure)
+  dev.off()
+}
+
+# Saving the linear model so it can be used in a scientific report
+save_lm_figure(penguins_clean, 
+            "figures/fig_lm.svg", 
+            size = 15, scaling = 1)
+
+# The figure can now be found saved in a separate folder 
+```
