@@ -66,7 +66,11 @@ plot(linear_model, which = 1)
 
 summary(linear_model)
 ```
-This linear model shows a statistically significant positive effect of body mass on flipper length. The p value is very close to 0. Therefore, we can conclude that flipper length is a statistically significant predictor of body mass. As flipper length increases, so does body mass, there is a statistically significant positive relationship between the two variables.
+This linear model shows a statistically significant positive effect of body mass on flipper length. 
+The p value is very close to 0. Therefore, we can conclude that flipper length is a statistically 
+significant predictor of body mass. 
+As flipper length increases, so does body mass, there is a statistically significant positive relationship 
+between the two variables.
 
 ```{r message=FALSE, warning=FALSE}
 # Making a function that will create a figure to illustrate the results found by the statistical test above. 
