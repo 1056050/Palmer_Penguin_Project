@@ -19,7 +19,7 @@ library(svglite)
 ```
 
 ```{r warning=FALSE}
-# Setting the working directory and reading in the raw data set from its' separate file
+# Setting the working directory and reading in the raw data set from the separate file
 
 setwd("~/PenguinProjectAssessment")
 
@@ -66,14 +66,14 @@ plot(linear_model, which = 1)
 
 summary(linear_model)
 ```
-This linear model shows a statistically significant positive effect of body mass on flipper length. The p value is very close to 0. Therefore, we can conclude that as body mass increases, so does flipper length. 
+This linear model shows a statistically significant positive effect of body mass on flipper length. The p value is very close to 0. Therefore, we can conclude that flipper length is a statistically significant predictor of body mass. As flipper length increases, so does body mass, there is a statistically significant positive relationship between the two variables.
 
 ```{r message=FALSE, warning=FALSE}
 # Making a function that will create a figure to illustrate the results found by the statistical test above. 
 
 lm_figure <- function(pengiuns_clean){ 
   ggplot(penguins_now_clean, aes(x=flipper_length_mm, y=body_mass_g))+geom_smooth(method=lm, level=0.99, fill='grey',  colour='grey40')+
-    geom_point(colour='dodgerblue4') + labs(title= "The Relationship Between Flipper Length and Body Mass for Palmer Penguins", x = "Flipper length (mm)",
+    geom_point(colour='dodgerblue4', size=0.9) + labs(title= "The Relationship Between Flipper Length and Body Mass\nfor Palmer Penguins", x = "Flipper length (mm)",
                        y = "Body mass (g)") +
     theme_bw()}
 
